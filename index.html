@@ -1935,6 +1935,24 @@ setInterval(decrement, 20000+Math.random()*14000);
 
 /* FORM */
 function join(inputId,successId,formId,source){
+  var inp=document.getElementById(inputId);
+  var email=inp?inp.value.trim():'';
+  if(!email||!email.includes('@')||!email.includes('.')){
+    if(inp){inp.style.outline='2px solid rgba(244,63,94,.55)';inp.focus();setTimeout(function(){inp.style.outline='';},1800);}
+    return;
+  }
+  var form=document.getElementById(formId),ok=document.getElementById(successId);
+  if(form)form.style.display='none';
+  if(ok){ok.classList.add('on');ok.style.display=ok.classList.contains('mid-success')?'block':'flex';}
+
+  // Google Sheets로 전송
+  fetch('https://script.google.com/macros/s/AKfycbw38FJgGp8J980kNsv9aJCTqQ3g8nHtwCaWdGrggByNjkJp8P1TaNtHZfCf-1ZBdtUV4g/exec', {
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email,source:source})
+  });
+}
   const inp=document.getElementById(inputId);
   const email=inp?inp.value.trim():'';
   if(!email||!email.includes('@')||!email.includes('.')){

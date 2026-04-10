@@ -1934,25 +1934,8 @@ function decrement(){
 setInterval(decrement, 20000+Math.random()*14000);
 
 /* FORM */
+var SHEET_URL='https://script.google.com/macros/s/AKfycbw38FJgGp8J980kNsv9aJCTqQ3g8nHtwCaWdGrggByNjkJp8P1TaNtHZfCf-1ZBdtUV4g/exec';
 function join(inputId,successId,formId,source){
-  var inp=document.getElementById(inputId);
-  var email=inp?inp.value.trim():'';
-  if(!email||!email.includes('@')||!email.includes('.')){
-    if(inp){inp.style.outline='2px solid rgba(244,63,94,.55)';inp.focus();setTimeout(function(){inp.style.outline='';},1800);}
-    return;
-  }
-  var form=document.getElementById(formId),ok=document.getElementById(successId);
-  if(form)form.style.display='none';
-  if(ok){ok.classList.add('on');ok.style.display=ok.classList.contains('mid-success')?'block':'flex';}
-
-  // Google Sheets로 전송
-  fetch('https://script.google.com/macros/s/AKfycbw38FJgGp8J980kNsv9aJCTqQ3g8nHtwCaWdGrggByNjkJp8P1TaNtHZfCf-1ZBdtUV4g/exec', {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:email,source:source})
-  });
-}
   const inp=document.getElementById(inputId);
   const email=inp?inp.value.trim():'';
   if(!email||!email.includes('@')||!email.includes('.')){
@@ -1964,6 +1947,10 @@ function join(inputId,successId,formId,source){
   if(ok){ ok.classList.add('on'); ok.style.display=ok.classList.contains('mid-success')?'block':'flex'; }
   decrement();
   if(typeof gtag!=='undefined') gtag('event','waitlist_join',{source});
+  var fd=new FormData();
+  fd.append('email',email);
+  fd.append('source',source);
+  fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:fd});
 }
 ['h-email','m-email','f-email'].forEach(id=>{
   const el=document.getElementById(id); if(!el)return;

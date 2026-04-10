@@ -1945,7 +1945,6 @@ function join(inputId,successId,formId,source){
   const form=document.getElementById(formId), ok=document.getElementById(successId);
   if(form) form.style.display='none';
   if(ok){ ok.classList.add('on'); ok.style.display=ok.classList.contains('mid-success')?'block':'flex'; }
-  decrement();
   if(typeof gtag!=='undefined') gtag('event','waitlist_join',{source});
   new Image().src=SHEET_URL+'?email='+encodeURIComponent(email)+'&source='+encodeURIComponent(source)+'&t='+Date.now();
 }

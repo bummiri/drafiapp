@@ -1935,6 +1935,24 @@ setInterval(decrement, 20000+Math.random()*14000);
 
 /* FORM */
 var SHEET_URL='https://script.google.com/macros/s/AKfycbw38FJgGp8J980kNsv9aJCTqQ3g8nHtwCaWdGrggByNjkJp8P1TaNtHZfCf-1ZBdtUV4g/exec';
+function sendToSheet(email,source){
+  var iname='drafi_'+Date.now();
+  var ifr=document.createElement('iframe');
+  ifr.name=iname; ifr.style.cssText='display:none;width:0;height:0;border:0';
+  document.body.appendChild(ifr);
+  var frm=document.createElement('form');
+  frm.method='GET'; frm.action=SHEET_URL; frm.target=iname;
+  [['email',email],['source',source]].forEach(function(p){
+    var inp=document.createElement('input');
+    inp.type='hidden'; inp.name=p[0]; inp.value=p[1];
+    frm.appendChild(inp);
+  });
+  document.body.appendChild(frm);
+  frm.submit();
+  setTimeout(function(){
+    try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}
+  },5000);
+}
 function join(inputId,successId,formId,source){
   const inp=document.getElementById(inputId);
   const email=inp?inp.value.trim():'';
@@ -1946,7 +1964,7 @@ function join(inputId,successId,formId,source){
   if(form) form.style.display='none';
   if(ok){ ok.classList.add('on'); ok.style.display=ok.classList.contains('mid-success')?'block':'flex'; }
   if(typeof gtag!=='undefined') gtag('event','waitlist_join',{source});
-  new Image().src=SHEET_URL+'?email='+encodeURIComponent(email)+'&source='+encodeURIComponent(source)+'&t='+Date.now();
+  sendToSheet(email,source);
 }
 ['h-email','m-email','f-email'].forEach(id=>{
   const el=document.getElementById(id); if(!el)return;

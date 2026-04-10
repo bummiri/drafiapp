@@ -1947,10 +1947,7 @@ function join(inputId,successId,formId,source){
   if(ok){ ok.classList.add('on'); ok.style.display=ok.classList.contains('mid-success')?'block':'flex'; }
   decrement();
   if(typeof gtag!=='undefined') gtag('event','waitlist_join',{source});
-  var fd=new FormData();
-  fd.append('email',email);
-  fd.append('source',source);
-  fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:fd});
+  new Image().src=SHEET_URL+'?email='+encodeURIComponent(email)+'&source='+encodeURIComponent(source)+'&t='+Date.now();
 }
 ['h-email','m-email','f-email'].forEach(id=>{
   const el=document.getElementById(id); if(!el)return;
